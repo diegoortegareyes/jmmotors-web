@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 11 11 13;
+  --surface: 18 18 22;
+  --text: 231 231 231;
+  --muted: 168 170 173;
+  --border: 42 42 47;
+  --brand: 237 7 36;
+  --brandHover: 255 26 60;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#0B0B0D] text-[#E7E7E7] antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  ::selection {
+    background: rgba(237, 7, 36, 0.4);
+    color: white;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-gradient-to-r from-white via-white to-[#A8AAAD] bg-clip-text text-transparent;
+  }
+  
+  .glow-red {
+    box-shadow: 0 0 40px rgba(237, 7, 36, 0.3);
+  }
+  
+  .border-gradient {
+    border-image: linear-gradient(to right, #ED0724, transparent) 1;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
