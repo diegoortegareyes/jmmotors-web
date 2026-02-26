@@ -1,33 +1,54 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
+// app/api/contacto/route.ts
+import { NextRequest, NextResponse } from "next/server";
+import { Resend } from "resend";
+
+export const runtime = "nodejs"; // importante para Vercel/Node
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+function escapeHtml(str: string) {
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // 1) Parse body
     const body = await request.json();
-    const { nombre, telefono, email, servicio, mensaje } = body;
+    const { nombre, telefono, email, servicio, mensaje } = body || {};
 
-    // Validación - ahora email es obligatorio
+    // 2) Validación mínima
     if (!nombre || !telefono || !email) {
       return NextResponse.json(
-        { error: 'Nombre, teléfono y email son obligatorios' },
+        { error: "Nombre, teléfono y email son obligatorios" },
         { status: 400 }
       );
     }
 
-    const fecha = new Date().toLocaleString('es-CL', {
-      timeZone: 'America/Santiago',
-      dateStyle: 'full',
-      timeStyle: 'short'
+    // 3) Normalizaciones
+    const fecha = new Date().toLocaleString("es-CL", {
+      timeZone: "America/Santiago",
+      dateStyle: "full",
+      timeStyle: "short",
     });
 
-    const telefonoLimpio = telefono.replace(/\D/g, '');
+    const telefonoLimpio = String(telefono).replace(/\D/g, "");
 
+    // 4) Correos destino / origen
+    //    - FROM debe ser del dominio verificado en Resend (en tu caso send.jmmotors.cl)
+    const FROM = "JM Motors <web@jmmotors.cl>";
+    const TO = ["contacto@jmmotors.cl"]; // <-- aquí llega el formulario (ojo: sin "r")
+
+    // 5) Envío
     const { data, error } = await resend.emails.send({
-      from: 'JM Motors Web <contacto@send.jmmotors.cl>',
-      to: ['contacto@jmmotors.cl'],
-      subject: `📩 ${nombre} - ${servicio || 'Consulta'}`,
+      from: FROM,
+      to: TO,
+      replyTo: String(email), // así respondes directo al cliente
+      subject: `📩 ${String(nombre)} - ${servicio ? String(servicio) : "Consulta"}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -36,26 +57,26 @@ export async function POST(request: NextRequest) {
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
-            
-            body { 
-              font-family: 'Inter', Arial, sans-serif; 
-              line-height: 1.6; 
-              color: #333; 
+
+            body {
+              font-family: 'Inter', Arial, sans-serif;
+              line-height: 1.6;
+              color: #333;
               margin: 0;
               padding: 0;
               background: #f5f5f5;
             }
-            .container { 
-              max-width: 600px; 
-              margin: 20px auto; 
+            .container {
+              max-width: 600px;
+              margin: 20px auto;
               background: white;
               border-radius: 12px;
               overflow: hidden;
               box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             }
-            .header { 
+            .header {
               background: linear-gradient(135deg, #0B0B0D 0%, #1a1a1f 100%);
-              padding: 30px; 
+              padding: 30px;
               text-align: center;
             }
             .logo {
@@ -63,8 +84,8 @@ export async function POST(request: NextRequest) {
               height: auto;
               margin-bottom: 15px;
             }
-            .header h1 { 
-              margin: 0; 
+            .header h1 {
+              margin: 0;
               font-size: 22px;
               color: white;
               font-weight: 700;
@@ -77,8 +98,8 @@ export async function POST(request: NextRequest) {
               text-transform: uppercase;
               letter-spacing: 2px;
             }
-            .content { 
-              padding: 35px; 
+            .content {
+              padding: 35px;
             }
             .badge {
               display: inline-block;
@@ -92,15 +113,13 @@ export async function POST(request: NextRequest) {
               letter-spacing: 1px;
               margin-bottom: 25px;
             }
-            .field { 
+            .field {
               margin-bottom: 22px;
               padding-bottom: 15px;
               border-bottom: 1px solid #f0f0f0;
             }
-            .field:last-of-type {
-              border-bottom: none;
-            }
-            .field-label { 
+            .field:last-of-type { border-bottom: none; }
+            .field-label {
               font-size: 11px;
               color: #888;
               text-transform: uppercase;
@@ -108,8 +127,8 @@ export async function POST(request: NextRequest) {
               font-weight: 600;
               margin-bottom: 6px;
             }
-            .field-value { 
-              font-size: 16px; 
+            .field-value {
+              font-size: 16px;
               color: #222;
               font-weight: 500;
             }
@@ -127,7 +146,7 @@ export async function POST(request: NextRequest) {
               font-weight: 700;
               margin-top: 5px;
             }
-            .mensaje-box { 
+            .mensaje-box {
               background: #f9f9f9;
               padding: 20px;
               border-radius: 8px;
@@ -146,7 +165,7 @@ export async function POST(request: NextRequest) {
               padding: 25px 35px;
               text-align: center;
             }
-            .cta-button { 
+            .cta-button {
               display: inline-block;
               background: #25D366;
               color: white;
@@ -158,25 +177,17 @@ export async function POST(request: NextRequest) {
               margin: 5px;
               transition: transform 0.2s;
             }
-            .cta-button:hover {
-              transform: translateY(-2px);
-            }
-            .cta-button.llamar {
-              background: #0B0B0D;
-            }
-            .footer { 
+            .cta-button:hover { transform: translateY(-2px); }
+            .cta-button.llamar { background: #0B0B0D; }
+            .footer {
               text-align: center;
               padding: 25px;
               background: #0B0B0D;
               color: #888;
               font-size: 12px;
             }
-            .footer strong {
-              color: white;
-            }
-            .footer p {
-              margin: 5px 0;
-            }
+            .footer strong { color: white; }
+            .footer p { margin: 5px 0; }
             @media (max-width: 600px) {
               .content { padding: 25px; }
               .header { padding: 20px; }
@@ -186,55 +197,59 @@ export async function POST(request: NextRequest) {
         </head>
         <body>
           <div class="container">
-            
+
             <div class="header">
               <img src="https://jmmotors.cl/logo-jmmotors.png" alt="JM Motors" class="logo" onerror="this.style.display='none'">
               <h1>NUEVO MENSAJE</h1>
               <p>Formulario Web</p>
             </div>
-            
+
             <div class="content">
-              
-              <span class="badge">📅 ${fecha}</span>
+              <span class="badge">📅 ${escapeHtml(fecha)}</span>
 
               <div class="field">
                 <div class="field-label">Cliente</div>
-                <div class="field-value" style="font-size: 20px; font-weight: 700;">${nombre}</div>
+                <div class="field-value" style="font-size: 20px; font-weight: 700;">
+                  ${escapeHtml(nombre)}
+                </div>
               </div>
 
               <div class="field">
                 <div class="field-label">Teléfono</div>
                 <div class="field-value">
-                  <a href="tel:+56${telefonoLimpio}">+56 ${telefonoLimpio}</a>
+                  <a href="tel:+56${escapeHtml(telefonoLimpio)}">+56 ${escapeHtml(telefonoLimpio)}</a>
                 </div>
               </div>
 
               <div class="field">
                 <div class="field-label">Email</div>
                 <div class="field-value">
-                  <a href="mailto:${email}">${email}</a>
+                  <a href="mailto:${escapeHtml(email)}">${escapeHtml(email)}</a>
                 </div>
               </div>
 
               <div class="field">
                 <div class="field-label">Servicio solicitado</div>
-                <div class="servicio-destacado">${servicio || 'Consulta general'}</div>
+                <div class="servicio-destacado">${escapeHtml(servicio || "Consulta general")}</div>
               </div>
 
               <div class="field" style="border-bottom: none;">
                 <div class="field-label">Detalles del mensaje</div>
                 <div class="mensaje-box">
-                  ${mensaje ? mensaje.replace(/\n/g, '<br>') : '<span class="mensaje-vacio">El cliente no dejó mensaje adicional</span>'}
+                  ${
+                    mensaje
+                      ? escapeHtml(String(mensaje)).replace(/\n/g, "<br>")
+                      : '<span class="mensaje-vacio">El cliente no dejó mensaje adicional</span>'
+                  }
                 </div>
               </div>
-
             </div>
 
             <div class="cta-section">
-              <a href="https://wa.me/56${telefonoLimpio}" class="cta-button">
+              <a href="https://wa.me/56${escapeHtml(telefonoLimpio)}" class="cta-button">
                 💬 Responder por WhatsApp
               </a>
-              <a href="tel:+56${telefonoLimpio}" class="cta-button llamar">
+              <a href="tel:+56${escapeHtml(telefonoLimpio)}" class="cta-button llamar">
                 📞 Llamar ahora
               </a>
             </div>
@@ -252,23 +267,16 @@ export async function POST(request: NextRequest) {
     });
 
     if (error) {
-      console.error('Error Resend:', error);
-      return NextResponse.json(
-        { error: 'Error al enviar el mensaje' },
-        { status: 500 }
-      );
+      console.error("Error Resend:", error);
+      return NextResponse.json({ error: "Error al enviar el mensaje" }, { status: 500 });
     }
 
     return NextResponse.json(
-      { success: true, message: 'Mensaje enviado correctamente' },
+      { success: true, message: "Mensaje enviado correctamente", id: data?.id },
       { status: 200 }
     );
-
   } catch (error) {
-    console.error('Error:', error);
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    );
+    console.error("Error:", error);
+    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
   }
 }

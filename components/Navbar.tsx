@@ -4,11 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
+import Image from "next/image";
 
 const nav = [
   { href: "/", label: "Inicio" },
   { href: "/servicios", label: "Servicios" },
-  { href: "/repuestos", label: "Repuestos" }, // ← NUEVO
+  { href: "/repuestos", label: "Repuestos" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/contacto", label: "Contacto" }
 ];
@@ -21,13 +22,15 @@ export default function Navbar() {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#0B0B0D]/90 backdrop-blur-md">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6">
         
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex items-baseline gap-0.5 font-black text-2xl tracking-tighter">
-            <span className="text-[#A8AAAD]">JM</span>
-            <span className="text-[#ED0724] italic font-serif text-3xl -mx-1">M</span>
-            <span className="text-[#A8AAAD]">OTORS</span>
-          </div>
+        {/* Logo REAL */}
+        <Link href="/" className="flex items-center gap-3 group relative w-40 h-12">
+          <Image
+            src="/logo-jmmotors.png"
+            alt="JM Motors"
+            fill
+            className="object-contain object-left"
+            priority
+          />
         </Link>
 
         {/* Desktop Nav */}

@@ -17,7 +17,7 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
-      {/* Background Image - TU FOTO REAL */}
+      {/* Background Image */}
       <div className="absolute inset-0 z-0">
         <Image
           src="/taller/hero-principal.jpeg"
@@ -29,44 +29,43 @@ export default function Hero() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0B0B0D] via-[#0B0B0D]/60 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#0B0B0D]/40 to-transparent" />
-        {/* Red accent glow */}
         <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#ED0724]/20 rounded-full blur-[120px]" />
       </div>
 
-      {/* Content - TODO SUBIDO */}
+      {/* Content */}
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 pt-12 pb-20 text-center">
         
-        {/* Badge - SUBIDO */}
+        {/* Badge - MULTIMARCA EN ÉNFASIS */}
         <div className={`
-          inline-flex items-center gap-2 rounded-full border border-[#ED0724]/30 bg-[#ED0724]/10 px-4 py-2 mb-6
+          inline-flex items-center gap-2 rounded-full border border-[#ED0724]/30 bg-[#ED0724]/10 px-5 py-2.5 mb-6
           transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}>
           <span className="flex h-2 w-2 rounded-full bg-[#ED0724] animate-pulse" />
-          <span className="text-sm font-medium text-[#ED0724]">Taller multimarca especializado</span>
+          <span className="text-sm font-bold text-[#ED0724] tracking-wide uppercase">Taller Multimarca</span>
         </div>
 
-        {/* Main Headline - SUBIDO */}
+        {/* Main Headline - ESPECIALISTAS DESTACADO */}
         <h1 className={`
-          text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-6
+          text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4
           transition-all duration-700 delay-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}>
-          <span className="text-white drop-shadow-lg">Expertos en </span>
+          <span className="text-white drop-shadow-lg">Especialistas </span>
           <span className="text-[#ED0724] italic font-serif drop-shadow-lg">SsangYong</span>
           <br className="hidden sm:block" />
           <span className="text-white drop-shadow-lg"> y </span>
           <span className="text-[#ED0724] italic font-serif drop-shadow-lg">Mitsubishi</span>
         </h1>
 
-        {/* Subheadline - SUBIDO */}
+        {/* Subheadline - MULTIMARCA EXPLICADO */}
         <p className={`
-          mx-auto max-w-2xl text-lg sm:text-xl text-white/90 mb-8 leading-relaxed drop-shadow-md
+          mx-auto max-w-2xl text-lg sm:text-xl text-white/90 mb-6 leading-relaxed drop-shadow-md
           transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}>
-          Mantención preventiva, diagnóstico computacional y reparaciones con garantía real. 
-          Atención directa, repuestos originales y servicio express.
+          <span className="font-semibold text-white">Servicio multimarca</span> con diagnóstico computacional, 
+          mantenciones y reparaciones con garantía real. Atención directa y repuestos originales.
         </p>
 
-        {/* CTAs - SUBIDO */}
+        {/* CTAs */}
         <div className={`
           flex flex-col sm:flex-row items-center justify-center gap-4 mb-12
           transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
@@ -91,7 +90,7 @@ export default function Hero() {
           </a>
         </div>
 
-        {/* Trust Strip - SUBIDO */}
+        {/* Trust Strip */}
         <div className={`
           grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto
           transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
@@ -118,7 +117,7 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Brand Logos - SUBIDO */}
+        {/* Brand Logos */}
         <div className={`
           mt-12 pt-6 border-t border-white/10
           transition-all duration-700 delay-700 ${isVisible ? 'opacity-100' : 'opacity-0'}
@@ -131,7 +130,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* MOUSE INDICATOR - CONSERVADO */}
+      {/* Mouse Indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2">
           <div className="w-1 h-2 bg-[#ED0724] rounded-full" />

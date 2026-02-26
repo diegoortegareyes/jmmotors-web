@@ -1,6 +1,7 @@
 import PageHeader from "@/components/PageHeader";
 import { Shield, Users, Wrench, Clock, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = { 
   title: "Nosotros | JM Motors",
@@ -12,8 +13,23 @@ export default function NosotrosPage() {
   const whatsappLink = `https://wa.me/${phoneNumber.replace("+", "")}`;
 
   return (
-    <div className="min-h-screen bg-[#0B0B0D] pt-20">
-      <div className="mx-auto max-w-6xl px-4 py-12">
+    <div className="min-h-screen bg-[#0B0B0D] pt-20 relative overflow-hidden">
+      
+      {/* Imagen de fondo */}
+      <div className="absolute top-0 left-0 right-0 h-[500px] z-0">
+        <Image
+          src="/nosotros/foto.jpeg"
+          alt="Nosotros JM Motors"
+          fill
+          className="object-cover object-center"
+          quality={90}
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D]/40 via-[#0B0B0D]/80 to-[#0B0B0D]" />
+      </div>
+
+      {/* Contenido */}
+      <div className="relative z-10 mx-auto max-w-6xl px-4 py-12">
         
         <PageHeader
           title="Nosotros"
@@ -28,7 +44,7 @@ export default function NosotrosPage() {
             { icon: Wrench, value: "2", label: "Marcas especialistas" },
             { icon: Shield, value: "100%", label: "Garantía real" }
           ].map((stat, idx) => (
-            <div key={idx} className="text-center p-4 rounded-xl bg-[#121216] border border-white/10">
+            <div key={idx} className="text-center p-4 rounded-xl bg-[#121216]/90 backdrop-blur-sm border border-white/10">
               <stat.icon className="mx-auto text-[#ED0724] mb-2" size={24} />
               <div className="text-2xl font-bold text-white">{stat.value}</div>
               <div className="text-xs text-[#A8AAAD] uppercase tracking-wider">{stat.label}</div>
@@ -40,7 +56,7 @@ export default function NosotrosPage() {
         <div className="grid md:grid-cols-2 gap-6 mb-12">
           
           {/* Forma de trabajar */}
-          <div className="rounded-2xl border border-white/10 bg-[#121216] p-6 hover:border-[#ED0724]/30 transition-colors">
+          <div className="rounded-2xl border border-white/10 bg-[#121216]/90 backdrop-blur-sm p-6 hover:border-[#ED0724]/30 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-[#ED0724]/10 flex items-center justify-center mb-4">
               <Wrench className="text-[#ED0724]" size={24} />
             </div>
@@ -64,7 +80,7 @@ export default function NosotrosPage() {
           </div>
 
           {/* Garantía */}
-          <div className="rounded-2xl border border-white/10 bg-[#121216] p-6 hover:border-[#ED0724]/30 transition-colors">
+          <div className="rounded-2xl border border-white/10 bg-[#121216]/90 backdrop-blur-sm p-6 hover:border-[#ED0724]/30 transition-colors">
             <div className="w-12 h-12 rounded-xl bg-[#ED0724]/10 flex items-center justify-center mb-4">
               <Shield className="text-[#ED0724]" size={24} />
             </div>
@@ -86,24 +102,24 @@ export default function NosotrosPage() {
         </div>
 
         {/* Especialidades */}
-        <div className="rounded-2xl bg-[#121216] border border-white/10 p-6 mb-12">
+        <div className="rounded-2xl bg-[#121216]/90 backdrop-blur-sm border border-white/10 p-6 mb-12">
           <h3 className="text-xl font-bold text-white mb-6 text-center">Especialistas certificados</h3>
           <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[#0B0B0D] border border-white/5">
-              <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-white font-bold text-lg">
+              <div className="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center text-white font-bold text-2xl">
                 S
               </div>
               <div>
-                <h4 className="text-white font-bold">SsangYong</h4>
+                <h4 className="text-white font-bold text-lg">SsangYong</h4>
                 <p className="text-[#A8AAAD] text-sm">Diagnóstico especializado, repuestos originales y alternativos.</p>
               </div>
             </div>
             <div className="flex items-center gap-4 p-4 rounded-xl bg-[#0B0B0D] border border-white/5">
-              <div className="w-16 h-16 rounded-xl bg-[#ED0724]/10 flex items-center justify-center text-[#ED0724] font-bold text-lg">
+              <div className="w-16 h-16 rounded-xl bg-[#ED0724]/10 flex items-center justify-center text-[#ED0724] font-bold text-2xl">
                 M
               </div>
               <div>
-                <h4 className="text-white font-bold">Mitsubishi</h4>
+                <h4 className="text-white font-bold text-lg">Mitsubishi</h4>
                 <p className="text-[#A8AAAD] text-sm">Toda la línea L200, Montero, ASX. Mantención y reparación.</p>
               </div>
             </div>

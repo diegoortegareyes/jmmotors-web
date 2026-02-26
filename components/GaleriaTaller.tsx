@@ -1,21 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import Image from "next/image";
 
-const fotosTaller = [
+const mediaItems = [
   {
+    type: "video",
+    src: "/taller/video-galeria.mp4",
+    poster: "/taller/galeria-1.jpeg", // Frame inicial del video
+    title: "JM Motors en acción",
+    alt: "Video del taller trabajando"
+  },
+  {
+    type: "image",
     src: "/taller/galeria-1.jpeg",
     alt: "Vehículos en mantención JM Motors",
     title: "Área de Mantención"
   },
   {
+    type: "image",
     src: "/taller/galeria-2.jpeg",
     alt: "Servicio técnico especializado",
     title: "Diagnóstico y Reparación"
   },
   {
+    type: "image",
     src: "/taller/galeria-3.jpeg",
     alt: "Elevador y equipamiento",
     title: "Equipamiento Profesional"
@@ -24,9 +34,46 @@ const fotosTaller = [
 
 export default function GaleriaTaller() {
   const [current, setCurrent] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  const next = () => setCurrent((prev) => (prev + 1) % fotosTaller.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + fotosTaller.length) % fotosTaller.length);
+  const next = () => {
+    setIsPlaying(false);
+    setCurrent((prev) => (prev + 1) % mediaItems.length);
+  };
+  
+  const prev = () => {
+    setIsPlaying(false);
+    setCurrent((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
+  };
+
+  const goTo = (idx: number) => {
+    setIsPlaying(false);
+    setCurrent(idx);
+  };
+
+  const togglePlay = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
+
+  // Reset video cuando cambia de slide
+  useEffect(() => {
+    const currentItem = mediaItems[current];
+    if (currentItem.type !== "video" && videoRef.current) {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  }, [current]);
+
+  const currentItem = mediaItems[current];
 
   return (
     <section className="py-20 bg-[#121216]">
@@ -71,46 +118,82 @@ export default function GaleriaTaller() {
                 <ChevronRight size={20} />
               </button>
               <span className="text-[#A8AAAD] text-sm">
-                {current + 1} / {fotosTaller.length}
+                {current + 1} / {mediaItems.length}
               </span>
+              {currentItem.type === "video" && (
+                <span className="text-[#ED0724] text-xs font-medium uppercase tracking-wider">
+                  • Video
+                </span>
+              )}
             </div>
           </div>
 
-          {/* Carrusel de fotos */}
+          {/* Carrusel de fotos y video */}
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-[#0B0B0D] border border-white/10">
-            {fotosTaller.map((foto, idx) => (
+            {mediaItems.map((item, idx) => (
               <div
                 key={idx}
                 className={`
                   absolute inset-0 transition-opacity duration-500
-                  ${idx === current ? 'opacity-100' : 'opacity-0'}
+                  ${idx === current ? 'opacity-100 z-10' : 'opacity-0 z-0'}
                 `}
               >
-                <Image
-                  src={foto.src}
-                  alt={foto.alt}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
+                {item.type === "video" ? (
+                  <>
+                    <video
+                      ref={videoRef}
+                      src={item.src}
+                      poster={item.poster}
+                      className="w-full h-full object-cover"
+                      playsInline
+                      muted
+                      loop
+                      onClick={togglePlay}
+                    />
+                    {/* Play/Pause overlay */}
+                    <button
+                      onClick={togglePlay}
+                      className="absolute inset-0 flex items-center justify-center bg-black/30 hover:bg-black/20 transition-colors"
+                    >
+                      <div className="w-16 h-16 rounded-full bg-[#ED0724] flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                        {isPlaying ? (
+                          <Pause className="text-white" size={28} />
+                        ) : (
+                          <Play className="text-white ml-1" size={28} />
+                        )}
+                      </div>
+                    </button>
+                  </>
+                ) : (
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                )}
+                
                 {/* Overlay con título */}
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-6">
-                  <h3 className="text-white font-bold text-lg">{foto.title}</h3>
-                  <p className="text-white/70 text-sm">{foto.alt}</p>
+                  <h3 className="text-white font-bold text-lg">{item.title}</h3>
+                  <p className="text-white/70 text-sm">{item.alt}</p>
                 </div>
               </div>
             ))}
             
             {/* Indicadores */}
             <div className="absolute top-4 right-4 flex gap-2">
-              {fotosTaller.map((_, idx) => (
+              {mediaItems.map((item, idx) => (
                 <button
                   key={idx}
-                  onClick={() => setCurrent(idx)}
+                  onClick={() => goTo(idx)}
                   className={`
                     w-2 h-2 rounded-full transition-colors
                     ${idx === current ? 'bg-[#ED0724]' : 'bg-white/30'}
+                    ${item.type === "video" ? 'w-3' : ''}
                   `}
+                  title={item.type === "video" ? "Video" : `Foto ${idx}`}
                 />
               ))}
             </div>

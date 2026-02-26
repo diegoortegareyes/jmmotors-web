@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Phone, MapPin, Clock, Wrench } from "lucide-react";
+import Image from "next/image";
+import { Phone, MapPin, Clock } from "lucide-react";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,19 +14,23 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 md:py-12">
         <div className="grid gap-8 md:grid-cols-3 lg:grid-cols-4">
           
-          {/* Brand - Compacto */}
+          {/* Brand con LOGO REAL */}
           <div className="lg:col-span-1">
-            <div className="flex items-baseline gap-0.5 font-black text-xl tracking-tighter mb-2">
-              <span className="text-[#A8AAAD]">JM</span>
-              <span className="text-[#ED0724] italic font-serif text-2xl -mx-1">M</span>
-              <span className="text-[#A8AAAD]">OTORS</span>
-            </div>
+            <Link href="/" className="inline-block mb-3">
+              <Image
+                src="/logo-jmmotors.png"
+                alt="JM Motors"
+                width={140}
+                height={40}
+                className="h-10 w-auto object-contain"
+              />
+            </Link>
             <p className="text-[#A8AAAD] text-sm leading-relaxed">
               Especialistas <span className="text-white">SsangYong</span> y <span className="text-white">Mitsubishi</span>
             </p>
           </div>
 
-          {/* Quick Links - Compacto */}
+          {/* Quick Links */}
           <div>
             <h4 className="text-white font-semibold text-sm mb-3 uppercase tracking-wider">Menú</h4>
             <div className="grid grid-cols-2 gap-2">
@@ -47,7 +52,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact Info - Compacto */}
+          {/* Contact Info */}
           <div className="md:col-span-2 lg:col-span-2">
             <h4 className="text-white font-semibold text-sm mb-3 uppercase tracking-wider">Contacto</h4>
             <div className="grid sm:grid-cols-2 gap-4">
@@ -68,8 +73,8 @@ export default function Footer() {
               <div className="flex items-start gap-2">
                 <Clock size={14} className="text-[#ED0724] mt-1 shrink-0" />
                 <div>
-                  <p className="text-white text-sm">Lun – Sáb: 09:00 – 18:00</p>
-                  <p className="text-[#A8AAAD] text-xs">Domingo: Cerrado</p>
+                  <p className="text-white text-sm">Lu – Vi : 09:00 – 18:00</p>
+                  <p className="text-[#A8AAAD] text-xs">Sabado y domingo: Cerrado</p>
                 </div>
               </div>
               <div>
@@ -87,7 +92,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar - Más compacto */}
+        {/* Bottom Bar */}
         <div className="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-[#A8AAAD] text-xs">
             © {currentYear} JM Motors. Todos los derechos reservados.

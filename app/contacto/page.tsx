@@ -16,22 +16,19 @@ export default function ContactoPage() {
   return (
     <div className="min-h-screen bg-[#0B0B0D] pt-20 relative overflow-hidden">
       
-      {/* Foto de fondo ARRIBA + DIFUMINADA (cuando la tengas) */}
+      {/* Imagen de fondo ACTIVADA */}
       <div className="absolute top-0 left-0 right-0 h-[400px] z-0">
-        {/* Descomenta cuando tengas la foto:
         <Image
-          src="/contacto/foto.jpeg"
+          src="/contacto/foto.png"
           alt="Contacto JM Motors"
           fill
           className="object-cover object-center"
           quality={90}
+          priority
         />
-        */}
         
-        {/* Placeholder gradient hasta que tengas la foto */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1f] to-[#0B0B0D]" />
-        
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0B0B0D]/50 to-[#0B0B0D]" />
+        {/* Overlay para que se lea el texto */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B0B0D]/60 via-[#0B0B0D]/80 to-[#0B0B0D]" />
       </div>
 
       {/* Contenido */}
@@ -46,7 +43,7 @@ export default function ContactoPage() {
           {/* Info lateral */}
           <div className="lg:col-span-2 space-y-6">
             {/* Card principal */}
-            <div className="bg-[#121216] rounded-2xl border border-white/10 p-6">
+            <div className="bg-[#121216]/90 backdrop-blur-sm rounded-2xl border border-white/10 p-6">
               <h3 className="text-xl font-bold text-white mb-6">Información</h3>
               
               <div className="space-y-4">
@@ -78,13 +75,13 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <p className="text-white font-medium">Horario</p>
-                    <p className="text-[#A8AAAD] text-sm">Lun – Sáb: 09:00 – 18:00<br />Domingo: Cerrado</p>
+                    <p className="text-[#A8AAAD] text-sm">Lu – Vi : 09:00 – 18:00<br />Sabado y domingo: Cerrado</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Botón AGENDAR HORA destacado */}
+            {/* Botón AGENDAR HORA */}
             <Link
               href={whatsappLink}
               target="_blank"
