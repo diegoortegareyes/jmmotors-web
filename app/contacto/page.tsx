@@ -56,7 +56,7 @@ export default function ContactoPage() {
                   </div>
                   <div>
                     <p className="text-white font-medium">Dirección</p>
-                    <p className="text-[#A8AAAD] text-sm">665 Sgto. Aldea<br />Santiago, Región Metropolitana</p>
+                    <p className="text-[#A8AAAD] text-sm">660 Sgto. Aldea<br />Santiago, Región Metropolitana</p>
                   </div>
                 </div>
 

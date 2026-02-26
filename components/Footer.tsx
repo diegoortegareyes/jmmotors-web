@@ -61,7 +61,7 @@ export default function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin size={14} className="text-[#ED0724] mt-1 shrink-0" />
                 <div>
-                  <p className="text-white text-sm">665 Sgto. Aldea</p>
+                  <p className="text-white text-sm">660 Sgto. Aldea</p>
                   <p className="text-[#A8AAAD] text-xs">Santiago, Región Metropolitana</p>
                 </div>
               </div>

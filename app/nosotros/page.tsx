@@ -116,7 +116,7 @@ export default function NosotrosPage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <div className="flex items-center gap-2 text-white">
               <MapPin size={18} className="text-[#ED0724]" />
-              <span className="text-sm">665 Sgto. Aldea, Santiago</span>
+              <span className="text-sm">660 Sgto. Aldea, Santiago</span>
             </div>
             <Link
               href={whatsappLink}
